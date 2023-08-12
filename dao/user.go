@@ -34,3 +34,14 @@ func (dao *UserDao) CreateUser(user *model.User) (err error) {
 	return dao.DB.Model(&model.User{}).Create(user).Error
 
 }
+
+// GetUserById 根据id获取user
+func (dao *UserDao) GetUserById(id uint) (user *model.User, err error) {
+	err = dao.DB.Model(&model.User{}).Where("id = ?", id).First(&user).Error
+	return
+}
+
+// UpdateUserById 根据id修改user信息
+func (dao *UserDao) UpdateUserById(uId uint, user *model.User) (err error) {
+	return dao.DB.Model(&model.User{}).Where("id=?", uId).Updates(&user).Error
+}
