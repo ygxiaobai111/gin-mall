@@ -80,5 +80,44 @@ func (service *UserService) Register(ctx context.Context) serializer.Response {
 }
 
 func (service *UserService) Login(ctx context.Context) serializer.Response {
+	var user *model.User
+	code := e.Success
+	userDao := dao.NewUserDao(ctx)
+	//判断用户是否存在
+	user, exist, err := userDao.ExistOrNotByUserName(service.UserName)
+	if !exist || err != nil {
+		code = e.ErrorExistUserNotFound
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+			Data:   "用户不存在，请先注册",
+		}
+	}
+	//校验密码
+	if user.CheckPassword(service.Password) == false {
+		code = e.ErrorNotCompare
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+			Data:   "密码错误，请重新登录",
+		}
+	}
+
+	//token 签发
+	token, err := util.GenerateToken(user.ID, service.UserName, 0)
+	if err != nil {
+		code = e.ErrorAuthToken
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+			Data:   "密码错误，请重新登录",
+		}
+
+	}
+	return serializer.Response{
+		Status: code,
+		Data:   serializer.TokenData{User: serializer.BuildUser(user), Token: token},
+		Msg:    e.GetMsg(code),
+	}
 
 }

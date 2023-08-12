@@ -16,3 +16,14 @@ func UserRegister(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err)
 	}
 }
+
+func UserLogin(ctx *gin.Context) {
+	var userLogin service.UserService
+	if err := ctx.ShouldBind(&userLogin); err == nil {
+		res := userLogin.Login(ctx.Request.Context())
+		ctx.JSON(http.StatusOK, res)
+
+	} else {
+		ctx.JSON(http.StatusBadRequest, err)
+	}
+}
