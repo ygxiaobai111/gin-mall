@@ -1,16 +1,18 @@
 package e
 
 var MsgFlags = map[int]string{
-	Success:                    "ok",
+	Success:                    "success",
 	Error:                      "fail",
 	InvalidParams:              "参数错误",
 	ErrorExistUser:             "该用户名已存在",
+	ErrorDatabase:              "数据库错误",
 	ErrorFailEncryption:        "密码加密失败",
 	ErrorExistUserNotFound:     "该用户不存在",
 	ErrorNotCompare:            "密码错误",
 	ErrorAuthToken:             "token 认证失败",
 	ErrorAuthCheckTokenTimeout: "token 过期",
-	ErrorUploadFail:            "文件上传失败",
+	ErrorExistFavorite:         "该商品已经存在于收藏夹",
+	ErrorAddressNotExist:       "该收货地址不存在",
 }
 
 //GstMag 获取状态码对应信息

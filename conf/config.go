@@ -3,7 +3,7 @@ package conf
 import (
 	"gin-mall/dao"
 	"gopkg.in/ini.v1"
-	_ "gopkg.in/ini.v1"
+
 	"strings"
 )
 

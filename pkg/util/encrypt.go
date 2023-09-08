@@ -10,7 +10,7 @@ import (
 
 var Encrypt *Encryption
 
-// AES对称加密
+// AES 对称加密
 type Encryption struct {
 	key string
 }
@@ -30,7 +30,7 @@ func PadPwd(srcByte []byte, blockSize int) []byte {
 	return srcByte
 }
 
-// AesEncoding加密
+// AesEncoding 加密
 func (k *Encryption) AesEncoding(src string) string {
 	srcByte := []byte(src)
 	block, err := aes.NewCipher([]byte(k.key))
@@ -64,23 +64,24 @@ func UnPadPwd(dst []byte) ([]byte, error) {
 }
 
 // AesDecoding 解密
+
 func (k *Encryption) AesDecoding(pwd string) string {
-	pwdByte := []byte(pwd)
 	pwdByte, err := base64.StdEncoding.DecodeString(pwd)
 	if err != nil {
-		fmt.Println("解密失败")
-		return ""
+		return pwd
+	}
+	block, errBlock := aes.NewCipher([]byte(k.key))
+	if errBlock != nil {
+		return pwd
 	}
 	dst := make([]byte, len(pwdByte))
-	dst, err = UnPadPwd(dst) //去除填充
+	block.Decrypt(dst, pwdByte)
+	dst, err = UnPadPwd(dst) // 填充的要去掉
 	if err != nil {
-		fmt.Println("填充去除失败")
 		return "0"
 	}
 	return string(dst)
-
 }
-
 func (k *Encryption) SetKey(key string) {
 	k.key = key
 }

@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"gin-mall/pkg/e"
-	"gin-mall/util"
+	"gin-mall/pkg/util"
 	"github.com/gin-gonic/gin"
 	"time"
 )
